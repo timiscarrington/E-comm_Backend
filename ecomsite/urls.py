@@ -15,8 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
 from shop import views
+from rest_framework import routers
+from shop.views import ProductViewSet
+
+# By including the router in the urlpatterns in the urls.py file, it can automatically create the appropriate URLs for the viewsets in the router, allowing us to easily access the viewsets through the URLs such as '/api/products/'
+
+router = routers.DefaultRouter()
+router.register(r'products', views.ProductViewSet)
+
 urlpatterns = [
+    #path to access admin to manage users and add products
     path('admin/', admin.site.urls),
+    #backend simple display of products, simply styled
     path('', views.index, name='index'),
+    #api path for customers
+    path('api/customers/', views.customers, name='customers'),
+    #ap path for products to add and returns json
+     path('api/', include(router.urls)),
 ]

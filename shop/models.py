@@ -10,3 +10,8 @@ class Products(models.Model):
     description = models.TextField()
     image = models.CharField(max_length=300)
 
+class Customer(models.Model):
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200, default="")
+    email = models.CharField(max_length=200)
+
