@@ -10,4 +10,3 @@ class Products(models.Model):
     description = models.TextField()
     image = models.CharField(max_length=300)
 
-    

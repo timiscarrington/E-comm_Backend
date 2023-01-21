@@ -1,0 +1,13 @@
+body{
+    background-color: rgb(10, 10, 11);
+}
+.card-text{
+    color:darkorchid;
+    font-weight: 800;
+}
+.card-title{
+    font-weight: 900;
+}
+.black-bg{
+background-color: black !important;
+}
