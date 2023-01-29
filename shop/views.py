@@ -3,8 +3,10 @@ from .models import Customer
 from django.http import JsonResponse
 from shop.serializers import CustomerSerializer
 from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser, AllowAny
 from .models import Products
 from .serializers import ProductSerializer
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -14,7 +16,15 @@ def index(request):
     item_name = request.GET.get('item_name')
     if item_name != '' and item_name is not None:
         product_objects = product_objects.filter(title__icontains=item_name)
+
+         # pagination to display the products
+    paginator = Paginator(product_objects, 4)
+    page = request.GET.get('page')
+    product_objects = paginator.get_page(page)
+
     return render(request, 'shop/index.html', {'product_objects':product_objects})
+   
+
 
 def customers(request):
     data = Customer.objects.all()
@@ -26,4 +36,9 @@ def customers(request):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
- 
+    permission_classes = [IsAdminUser | AllowAny]
+    #function that checks if its admin user, if not products can only be read, not updated, created, nor destroyed
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            self.permission_classes = [IsAdminUser]
+        return super(ProductViewSet, self).get_permissions()

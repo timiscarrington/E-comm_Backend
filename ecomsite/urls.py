@@ -14,11 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path, include
 from shop import views
 from rest_framework import routers
-from shop.views import ProductViewSet
+# from shop.views import ProductViewSet
 
 # By including the router in the urlpatterns in the urls.py file, it can automatically create the appropriate URLs for the viewsets in the router, allowing us to easily access the viewsets through the URLs such as '/api/products/'
 
@@ -33,5 +32,5 @@ urlpatterns = [
     #api path for customers
     path('api/customers/', views.customers, name='customers'),
     #ap path for products to add and returns json
-     path('api/', include(router.urls)),
+    path('api/', include(router.urls)),
 ]

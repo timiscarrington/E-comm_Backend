@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 # this going to be the models for each product
 class Products(models.Model):
@@ -9,6 +10,7 @@ class Products(models.Model):
     category = models.CharField(max_length=200)
     description = models.TextField()
     image = models.CharField(max_length=300)
+    image2= models.CharField(max_length=300, default='https://www.jta.org/wp-content/uploads/2017/06/bubble-gum-960x600.jpg')
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=200)
