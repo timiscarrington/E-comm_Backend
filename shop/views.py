@@ -2,22 +2,21 @@ from django.shortcuts import render
 from .models import Customer
 from django.http import JsonResponse
 from shop.serializers import CustomerSerializer
-from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework import viewsets, generics
 from .models import Products
 from .serializers import ProductSerializer
 from django.core.paginator import Paginator
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-# Create your views here.
 
 def index(request):
     product_objects = Products.objects.all()
-# performing a search for item name, and then letting it be lenient by filtering and seeing if the search contains a similar name
     item_name = request.GET.get('item_name')
     if item_name != '' and item_name is not None:
         product_objects = product_objects.filter(title__icontains=item_name)
 
-         # pagination to display the products
     paginator = Paginator(product_objects, 4)
     page = request.GET.get('page')
     product_objects = paginator.get_page(page)
@@ -31,14 +30,20 @@ def customers(request):
     serializer = CustomerSerializer(data, many=True)
     return JsonResponse({'customers': serializer.data})
 
-# a class called ProductViewSet which inherits from viewsets.ModelViewSet.This class defines the queryset and serializer_class attributes. The queryset attribute is set to Products.objects.all() which will retrieve all the products from the Products model. The serializer_class attribute is set to ProductSerializer.
+
+@api_view(['POST'])
+def register(request):
+    if request.method == 'POST':
+        serializer = CustomerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Products.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAdminUser | AllowAny]
-    #function that checks if its admin user, if not products can only be read, not updated, created, nor destroyed
+    
+
     def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            self.permission_classes = [IsAdminUser]
         return super(ProductViewSet, self).get_permissions()

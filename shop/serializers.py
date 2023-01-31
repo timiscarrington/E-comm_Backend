@@ -12,4 +12,18 @@ class CustomerSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
-        fields = ('id', 'title', 'price', 'category', 'description', 'image')
+        fields = ('id', 'title', 'price', 'category', 'description', 'image', 'image2', 'qty')
+
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ('username', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = Customer.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+        return user

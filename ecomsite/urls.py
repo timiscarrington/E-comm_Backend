@@ -31,6 +31,8 @@ urlpatterns = [
     path('', views.index, name='index'),
     #api path for customers
     path('api/customers/', views.customers, name='customers'),
-    #ap path for products to add and returns json
+    #api path for register a customer
+    path('api/register/', views.register, name='register'),
+    #api path for products to add and returns json
     path('api/', include(router.urls)),
 ]
