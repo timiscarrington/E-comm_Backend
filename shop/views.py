@@ -22,13 +22,14 @@ def index(request):
     product_objects = paginator.get_page(page)
 
     return render(request, 'shop/index.html', {'product_objects':product_objects})
-   
+
 
 
 def customers(request):
     data = Customer.objects.all()
     serializer = CustomerSerializer(data, many=True)
-    return JsonResponse({'customers': serializer.data})
+    return JsonResponse({'customers':{ serializer.data}})
+   
 
 
 @api_view(['POST'])

@@ -14,6 +14,8 @@ class Products(models.Model):
     image2= models.CharField(max_length=300, default='https://www.jta.org/wp-content/uploads/2017/06/bubble-gum-960x600.jpg')
 
 class Customer(models.Model):
+    class Meta:
+        db_table = "customer"
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200, default="")
     email = models.CharField(max_length=200)

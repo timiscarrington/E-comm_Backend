@@ -5,7 +5,7 @@ from shop.models import Products
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = '__all__'
+        fields = ('__all__')
 
 
 # This class defines the fields attribute which specifies the fields of the Products model that should be included in the serialized representation.
